@@ -5,7 +5,7 @@ module.exports = {
 	db: {
 		host: 'localhost',
 		port: 27017,
-		name: 'pikachu',
-		url: 'mongodb://localhost:27017/pikachu'
+		name: 'caffeinehunt',
+		url: 'mongodb://localhost:27017/caffeinehunt'
 	}
 };
