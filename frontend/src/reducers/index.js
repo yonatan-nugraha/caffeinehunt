@@ -12,7 +12,7 @@ const restaurantReducer = (state = initialState, action) => {
   	case ADD_RESTAURANT:
   		return { ...state, restaurants: [...state.restaurants, action.payload] };
     case DELETE_RESTAURANT:
-      return { ...state, restaurants: state.restaurants.filter(restaurant => restaurant.id !== action.payload.id) };
+      return { ...state, restaurants: state.restaurants.filter(restaurant => restaurant._id !== action.payload._id) };
     default:
       return state;
   }
