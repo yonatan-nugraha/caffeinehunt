@@ -1,0 +1,19 @@
+version: "2"
+services:
+  app:
+    build: .
+    image: yonatannugraha/caffeinehunt-server
+    ports:
+      - "3000:3000"
+    links:
+      - mongo
+    volumes:
+      - .:/usr/src/app
+    depends_on:
+      - mongo
+  mongo:
+    image: mongo
+    volumes:
+      - ./data/db:/data/db
+    ports:
+      - "27017:27017"

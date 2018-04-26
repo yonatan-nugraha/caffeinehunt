@@ -1,0 +1,10 @@
+{
+  "env": {
+    "browser": true
+  },
+  "extends": "airbnb-base",
+  "rules": {
+    "no-alert": 0,
+    "arrow-body-style": ["error", "always"]
+  }
+}
