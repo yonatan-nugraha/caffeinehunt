@@ -2,15 +2,15 @@ import { combineReducers } from 'redux';
 import { ADD_RESTAURANT, DELETE_RESTAURANT, GET_RESTAURANTS } from '../actions/types';
 
 const initialState = {
-  restaurants: []
+  restaurants: [],
 };
 
 const restaurantReducer = (state = initialState, action) => {
   switch (action.type) {
-  	case GET_RESTAURANTS:
+    case GET_RESTAURANTS:
       return { ...state, restaurants: action.payload };
-  	case ADD_RESTAURANT:
-  		return { ...state, restaurants: [...state.restaurants, action.payload] };
+    case ADD_RESTAURANT:
+      return { ...state, restaurants: [...state.restaurants, action.payload] };
     case DELETE_RESTAURANT:
       return { ...state, restaurants: state.restaurants.filter(restaurant => restaurant._id !== action.payload._id) };
     default:
@@ -19,5 +19,5 @@ const restaurantReducer = (state = initialState, action) => {
 };
 
 export default combineReducers({
-	restaurantReducer
-})
+  restaurantReducer,
+});
