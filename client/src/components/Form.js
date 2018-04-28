@@ -10,68 +10,54 @@ class Form extends React.Component {
     this.state = {
     	name: '',
     	image: '',
+      latitude: '',
+      longitude: '',
     };
 
-    this.handleNameChange = this.handleNameChange.bind(this);
-    this.handleImageChange = this.handleImageChange.bind(this);
-    this.handleCreateRestaurant = this.handleCreateRestaurant.bind(this);
+    this.handleGetRestaurants = this.handleGetRestaurants.bind(this);
   }
 
-  handleNameChange(e) {
-    this.setState({
-      name: e.target.value
-    });
-  }
+  handleGetRestaurants(e) {
+    const geolocation = navigator.geolocation;
+  
+    if (geolocation) {
+      geolocation.getCurrentPosition((position) => {
+        const { latitude, longitude } = position.coords;
 
-  handleImageChange(e) {
-    this.setState({
-      image: e.target.value
-    });
-  }
+        this.setState({
+          latitude,
+          longitude
+        });
 
-  handleCreateRestaurant(e) {
-    this.props.addRestaurant({
-      name: this.state.name,
-      image: this.state.image,
-    });
-  }
+        this.props.getRestaurants({
+          latitude,
+          longitude
+        });
+      }, () => {
+        throw new Error('Permission Denied');
+      });
 
- 	componentDidMount() {
- 		// this.props.addRestaurant({
-    //   _id: 4,
-    //   name: 'Goedkoop', 
-    //   image: 'https://b.zmtcdn.com/data/pictures/chains/1/7403971/5ab2233afc4785e968390e60d0fd7868_featured_v2.jpg?fit=around%7C200%3A200&crop=200%3A200%3B%2A%2C%2A'
-    // });
- 	}
+    } else {
+      throw new Error('Not Supported');
+    }
+  }
 
   render() {
   	return (
       <div class="row">
-      	<form>
-      		<div class="form-group">
-            <label class="form-label">Name:</label>
-            <input
-              value={this.props.reason}
-              onChange={this.handleNameChange}
-              class="form-input"
-              type="text"
-              placeholder="Name" />
-        	</div>
-      		<div class="form-group">
-            <label class="form-label">Image:</label>
-            <input
-              value={this.props.image}
-              onChange={this.handleImageChange}
-              class="form-input"
-              type="text"
-              placeholder="Image" />
+        <div class="col-md-12">
+          <div class="input-group stylish-input-group">
+            <input 
+              type="text" 
+              class="form-control" 
+              placeholder={`${this.state.latitude}, ${this.state.longitude}`} />
+            <span class="input-group-addon">
+              <button onClick={this.handleGetRestaurants} type="button">
+                <span class="glyphicon glyphicon-search">Find</span>
+              </button>  
+            </span>
           </div>
-         	<button
-         		onClick={this.handleCreateRestaurant}
-            type="button"
-            class="btn btn-primary">Save
-          </button>
-      	</form>
+        </div>
       </div>
     );
   }
@@ -79,7 +65,7 @@ class Form extends React.Component {
 
 const mapDispatchToProps = dispatch => {  
   return bindActionCreators({
-    addRestaurant: addRestaurant
+    getRestaurants: getRestaurants,
   }, dispatch);
 }
 

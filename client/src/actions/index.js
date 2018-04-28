@@ -1,22 +1,12 @@
 import axios from 'axios';
 import { GET_RESTAURANTS, ADD_RESTAURANT, DELETE_RESTAURANT } from './types';
+import config from '../../config/default';
 
 const defaultRestaurants = [
   {
     _id: 1,
     name: 'St. Ali',
     image: 'https://b.zmtcdn.com/data/pictures/8/18386858/c036a4d9c577a45da5f29116bd650e0a_featured_v2.jpg?fit=around%7C200%3A200&crop=200%3A200%3B%2A%2C%2A',
-  },
-  {
-    _id: 2,
-    name: 'On Three',
-    image: 'https://b.zmtcdn.com/data/pictures/8/18623698/e5e6461218778ce3b4751f15a8f44773_featured_v2.jpg?fit=around%7C200%3A200&crop=200%3A200%3B%2A%2C%2A',
-  },
-  {
-    _id: 3,
-    name: 'Warung Nako',
-    image: 'https://b.zmtcdn.com/data/pictures/2/18663732/9c7adc2960ed1cadbe2725a3e84df597_featured_v2.jpg?fit=around%7C200%3A200&crop=200%3A200%3B%2A%2C%2A',
-
   },
 ];
 
@@ -35,10 +25,13 @@ const deleteRestaurantAsync = restaurant => ({
   payload: restaurant,
 });
 
-export const getRestaurants = () => {
+export const getRestaurants = (coordinates) => {
   return (dispatch) => {
-    axios.get('http://localhost:4000/restaurants')
+    axios.get(`${config.server.url}/restaurants?latitude=${coordinates.latitude}&longitude=${coordinates.longitude}`)
       .then((res) => {
+        res.data.forEach((restaurant) => {
+          restaurant.image = `${config.server.url}/images/restaurants/${restaurant.image}`;
+        });
         dispatch(getRestaurantsAsync(res.data));
       })
       .catch((err) => {
@@ -50,7 +43,7 @@ export const getRestaurants = () => {
 
 export const addRestaurant = (restaurant) => {
   return (dispatch) => {
-    axios.post('http://localhost:4000/restaurants', restaurant)
+    axios.post(`${config.server.url}/restaurants`, restaurant)
       .then((res) => {
         dispatch(addRestaurantAsync(res.data));
       })
@@ -62,7 +55,7 @@ export const addRestaurant = (restaurant) => {
 
 export const deleteRestaurant = (restaurant) => {
   return (dispatch) => {
-    axios.delete(`http://localhost:4000/restaurants/${restaurant._id}`)
+    axios.delete(`${config.server.url}/restaurants/${restaurant._id}`)
       .then((res) => {
         alert(res.data.message);
         dispatch(deleteRestaurantAsync(restaurant));

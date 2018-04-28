@@ -1,5 +1,7 @@
+const express = require('express');
 const bodyParser = require('body-parser');
 const graphqlHTTP = require('express-graphql');
+const path = require('path');
 
 const restaurantController = require('./controllers/restaurant.js');
 const schema = require('./graphql');
@@ -14,6 +16,8 @@ module.exports = (app) => {
     res.header('Access-Control-Allow-Methods', '*');
     next();
   });
+
+  app.use(express.static(path.join(__dirname, '/../public')));
 
   app.get('/', (req, res) => {
     res.status(200).send('Hello World!');

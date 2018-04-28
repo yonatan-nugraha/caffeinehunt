@@ -1,4 +1,5 @@
-const Restaurant = require('../models/restaurant.js');
+const Restaurant = require('../models/restaurant');
+require('../global');
 
 exports.create = (req, res) => {
   if (!req.body.name) {
@@ -22,7 +23,21 @@ exports.create = (req, res) => {
 };
 
 exports.findAll = (req, res) => {
-  Restaurant.find().then((restaurants) => {
+  Restaurant.find().lean().then((restaurants) => {
+    const { latitude, longitude } = req.query;
+
+    // calculate distance
+    restaurants.forEach((restaurant) => {
+      const distance = calculateDistance(latitude, longitude, restaurant.latitude, restaurant.longitude, 'K');
+      restaurant.distance = distance;
+
+      return restaurant;
+    });
+
+    restaurants.sort((a, b) => { 
+      return a.distance - b.distance;
+    });
+
     res.send(restaurants);
   }).catch((err) => {
     res.status(500).send({
