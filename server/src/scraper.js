@@ -11,7 +11,7 @@ mongodb.connect();
 
 const scrapPromises = [];
 
-for (let i = 1; i <= 5; i += 1) {
+for (let i = 1; i <= 10; i += 1) {
   const page = i > 1 ? `?page=${i}` : '';
 
   scrapPromises.push(new Promise((resolve, reject) => {
@@ -25,8 +25,11 @@ for (let i = 1; i <= 5; i += 1) {
           const subzone = $(element).find('.search_result_subzone').text().trim();
           const address = $(element).find('.search-result-address').text().trim();
           const rating = $(element).find('.res-rating-nf').text().trim();
-          const establishment = $(element).find('.res-snippet-small-establishment').find('a').text().trim();
+          const establishments = $(element).find('.res-snippet-small-establishment').find('a').map(function () {
+            return $(this).text().trim();
+          }).get().join(', ');
           const costForTwo = $(element).find('.res-cost').text().trim().replace(/\D+/g, '');
+          const openingHours = $(element).find('.res-timing').find('.search-grid-right-text').text().trim();
           const imageUrl = $(element).find('.search_left_featured').find('a').attr('data-original').trim();
           const pageUrl = $(element).find('.result-title').attr('href').trim();
 
@@ -39,8 +42,9 @@ for (let i = 1; i <= 5; i += 1) {
               const restaurant = {
                 name,
                 rating,
-                establishment,
+                establishments,
                 costForTwo,
+                openingHours,
                 imageUrl,
                 subzone,
                 address,
@@ -88,8 +92,9 @@ for (let i = 1; i <= 5; i += 1) {
               name: restaurant.name,
               image: imageName,
               rating: restaurant.rating,
-              establishment: restaurant.establishment,
+              establishments: restaurant.establishments,
               costForTwo: restaurant.costForTwo,
+              openingHours: restaurant.openingHours,
               subzone: restaurant.subzone,
               address: restaurant.address,
               latitude: restaurant.latitude,
