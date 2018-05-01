@@ -13,29 +13,33 @@ class List extends React.Component {
 
   render() {
     return (
-      <div class="row">
-        <div class="col-md-12">
-          <ul class="widget-products">
-          {this.props.restaurants.map(restaurant => {
-            return (
-              <li key={restaurant._id}>
-                <a href="#">
-                  <span class="img">
-                    <img class="img-thumbnail" src={restaurant.image} />
-                  </span>
-                  <span class="product clearfix">
-                    <span class="name">{restaurant.name}</span>
-                    <span class="price">
-                      <i class="fa fa-money"></i> {restaurant.costForTwo}
-                    </span>
-                  </span>
-                </a>
-              </li>
-            );
-          })}
-          </ul>
-        </div>
-      </div>
+      <ul class="restaurant">
+      {this.props.restaurants.map(restaurant => {
+        return (
+          <li key={restaurant._id}>
+            <a href="#">
+              <span class="img">
+                <img class="img-thumbnail" src={restaurant.image} />
+              </span>
+              <span class="restaurant-detail clearfix">
+                <span class="establishment">{restaurant.establishments}</span>
+                <span class="name">{restaurant.name}</span>
+                <span class="subzone">{restaurant.subzone}</span>
+                <span class="address">
+                  <i class="fa fa-map-marker text-warning"></i> {restaurant.address}
+                </span>
+                <span class="cost">
+                  <i class="fa fa-money text-success"></i> IDR {restaurant.costForTwo.toLocaleString()}
+                </span>
+                <span class="time">
+                  <i class="fa fa-clock-o text-primary"></i> 10h to 22h (Mon-Sun)
+                </span>
+              </span>
+            </a>
+          </li>
+        );
+      })}
+      </ul>
     );
   }
 };

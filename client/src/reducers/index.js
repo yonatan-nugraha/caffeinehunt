@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux';
-import { ADD_RESTAURANT, DELETE_RESTAURANT, GET_RESTAURANTS } from '../actions/types';
+import { ADD_RESTAURANT, DELETE_RESTAURANT, GET_RESTAURANTS, RESET_RESTAURANTS } from '../actions/types';
 
 const initialState = {
   restaurants: [],
@@ -13,6 +13,8 @@ const restaurantReducer = (state = initialState, action) => {
       return { ...state, restaurants: [...state.restaurants, action.payload] };
     case DELETE_RESTAURANT:
       return { ...state, restaurants: state.restaurants.filter(restaurant => restaurant._id !== action.payload._id) };
+    case RESET_RESTAURANTS:
+      return { ...state, restaurants: [] };
     default:
       return state;
   }

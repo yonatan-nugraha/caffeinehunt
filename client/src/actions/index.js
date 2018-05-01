@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { GET_RESTAURANTS, ADD_RESTAURANT, DELETE_RESTAURANT } from './types';
+import { GET_RESTAURANTS, ADD_RESTAURANT, DELETE_RESTAURANT, RESET_RESTAURANTS } from './types';
 import config from '../../config/default';
 
 const defaultRestaurants = [
@@ -65,4 +65,9 @@ export const deleteRestaurant = (restaurant) => {
       });
   };
 };
+
+export const resetRestaurants = () => ({
+  type: RESET_RESTAURANTS,
+  payload: null,
+});
 
