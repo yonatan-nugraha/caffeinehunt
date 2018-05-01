@@ -8,8 +8,6 @@ class Form extends React.Component {
     super(props);
 
     this.state = {
-      latitude: '<latitude>',
-      longitude: '<longitude>',
       active: true,
     };
 
@@ -24,6 +22,7 @@ class Form extends React.Component {
     if (geolocation) {
       geolocation.getCurrentPosition((position) => {
         const { latitude, longitude } = position.coords;
+        const page = 1;
 
         this.setState({
           latitude,
@@ -32,8 +31,8 @@ class Form extends React.Component {
 
         this.props.getRestaurants({
           latitude,
-          longitude
-        });
+          longitude,
+        }, page);
 
         this.setState({ active: true });
       }, () => {
@@ -54,7 +53,7 @@ class Form extends React.Component {
   render() {
   	return (
       <div className="input-group search-bar">
-        <input type="text" className="form-control" placeholder={`${this.state.latitude}, ${this.state.longitude}`} disabled/>
+        <input type="text" className="form-control" placeholder={`${this.props.coordinates.latitude}, ${this.props.coordinates.longitude}`} disabled/>
         <span className="search-button">
           <button type="button" className={ this.state.active ? "btn btn-danger" : "btn btn-secondary disabled" } onClick={this.handleGetRestaurants}>
             <span className="glyphicon glyphicon-search">Find</span>
@@ -65,6 +64,12 @@ class Form extends React.Component {
   }
 }
 
+const mapStateToProps = state => {
+  return {
+    coordinates: state.restaurantReducer.coordinates,
+  };
+};
+
 const mapDispatchToProps = dispatch => {  
   return bindActionCreators({
     getRestaurants: getRestaurants,
@@ -72,4 +77,4 @@ const mapDispatchToProps = dispatch => {
   }, dispatch);
 }
 
-export default connect(null, mapDispatchToProps)(Form);
+export default connect(mapStateToProps, mapDispatchToProps)(Form);

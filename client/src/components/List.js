@@ -1,14 +1,42 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import { addRestaurant, deleteRestaurant, getRestaurants } from '../actions/index';
+import { getRestaurants } from '../actions/index';
 import '../../public/css/style.css';
 
 class List extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {};
+    this.state = {
+      isLoading: false,
+    };
+
+    this.handleScroll = this.handleScroll.bind(this);
+  }
+
+  componentDidMount() {
+    window.addEventListener('scroll', this.handleScroll);
+  }
+
+  handleScroll() {
+    const scrollTop = (document.documentElement && document.documentElement.scrollTop) || document.body.scrollTop;
+    const scrollHeight = (document.documentElement && document.documentElement.scrollHeight) || document.body.scrollHeight;
+    const clientHeight = document.documentElement.clientHeight || window.innerHeight;
+    const scrolledToBottom = Math.ceil(scrollTop + clientHeight) >= scrollHeight;
+
+    if (scrolledToBottom && !this.state.isLoading) {
+      this.setState({ isLoading: true });
+
+      setTimeout(() => {
+        this.setState({ isLoading: false });
+        const page = this.props.page;
+        this.props.getRestaurants({
+          latitude: this.props.coordinates.latitude,
+          longitude: this.props.coordinates.longitude
+        }, page);
+      }, 1000);
+    }
   }
 
   render() {
@@ -39,6 +67,11 @@ class List extends React.Component {
           </li>
         );
       })}
+      {this.state.isLoading ? (
+      <div className="data-loading">
+        <i className="fa fa-refresh fa-spin"></i>
+      </div>
+      ) : (<div className="data-loading"></div>)}
       </ul>
     );
   }
@@ -46,12 +79,15 @@ class List extends React.Component {
 
 const mapStateToProps = state => {
   return { 
-    restaurants: state.restaurantReducer.restaurants
+    restaurants: state.restaurantReducer.restaurants,
+    coordinates: state.restaurantReducer.coordinates,
+    page: state.restaurantReducer.page,
   };
 };
 
 const mapDispatchToProps = dispatch => {  
   return bindActionCreators({
+    getRestaurants: getRestaurants,
   }, dispatch);
 }
 

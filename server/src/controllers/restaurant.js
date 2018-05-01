@@ -24,7 +24,9 @@ exports.create = (req, res) => {
 
 exports.findAll = (req, res) => {
   Restaurant.find().lean().then((restaurants) => {
-    const { latitude, longitude } = req.query;
+    const { latitude, longitude, page } = req.query;
+    const limit = 10;
+    const start = (page - 1) * limit;
 
     // calculate distance
     restaurants.forEach((restaurant) => {
@@ -38,7 +40,7 @@ exports.findAll = (req, res) => {
       return a.distance - b.distance;
     });
 
-    res.send(restaurants);
+    res.send(restaurants.splice(start, limit));
   }).catch((err) => {
     res.status(500).send({
       message: err.message || 'Some error occurred while retrieving restaurants.',

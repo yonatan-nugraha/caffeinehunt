@@ -97,4 +97,10 @@
   font-weight: 300;
 }
 
+.data-loading {
+  display: block;
+  text-align: center;
+  border: 0;
+  font-size: 5rem;
+}
 

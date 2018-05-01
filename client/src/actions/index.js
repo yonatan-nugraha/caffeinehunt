@@ -4,9 +4,16 @@ import config from '../../config/default';
 
 const defaultRestaurants = [];
 
-const getRestaurantsAsync = restaurants => ({
+const getRestaurantsAsync = (restaurants, coordinates, page) => ({
   type: GET_RESTAURANTS,
-  payload: restaurants,
+  payload: {
+    restaurants,
+    coordinates: {
+      latitude: coordinates.latitude,
+      longitude: coordinates.longitude,
+    },
+    page,
+  },
 });
 
 const addRestaurantAsync = restaurant => ({
@@ -19,18 +26,18 @@ const deleteRestaurantAsync = restaurant => ({
   payload: restaurant,
 });
 
-export const getRestaurants = (coordinates) => {
+export const getRestaurants = (coordinates, page) => {
   return (dispatch) => {
-    axios.get(`${config.server.url}/restaurants?latitude=${coordinates.latitude}&longitude=${coordinates.longitude}`)
+    axios.get(`${config.server.url}/restaurants?latitude=${coordinates.latitude}&longitude=${coordinates.longitude}&page=${page}`)
       .then((res) => {
         res.data.forEach((restaurant) => {
           restaurant.image = `${config.server.url}/images/restaurants/${restaurant.image}`;
         });
-        dispatch(getRestaurantsAsync(res.data));
+        dispatch(getRestaurantsAsync(res.data, coordinates, page));
       })
       .catch((err) => {
         console.log(err);
-        dispatch(getRestaurantsAsync(defaultRestaurants));
+        dispatch(getRestaurantsAsync(defaultRestaurants, coordinates, page));
       });
   };
 };
