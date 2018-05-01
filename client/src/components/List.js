@@ -13,26 +13,26 @@ class List extends React.Component {
 
   render() {
     return (
-      <ul class="restaurant">
+      <ul className="restaurant">
       {this.props.restaurants.map(restaurant => {
         return (
           <li key={restaurant._id}>
             <a href="#">
-              <span class="img">
-                <img class="img-thumbnail" src={restaurant.image} />
+              <span className="img">
+                <img className="img-thumbnail" src={restaurant.image} />
               </span>
-              <span class="restaurant-detail clearfix">
-                <span class="establishment">{restaurant.establishments}</span>
-                <span class="name">{restaurant.name}</span>
-                <span class="subzone">{restaurant.subzone}</span>
-                <span class="address">
-                  <i class="fa fa-map-marker text-warning"></i> {restaurant.address}
+              <span className="restaurant-detail clearfix">
+                <span className="establishment">{restaurant.establishments}</span>
+                <span className="name">{restaurant.name}</span>
+                <span className="subzone">{restaurant.subzone}</span>
+                <span className="address">
+                  <i className="fa fa-map-marker text-warning"></i> {restaurant.address}
                 </span>
-                <span class="cost">
-                  <i class="fa fa-money text-success"></i> IDR {restaurant.costForTwo.toLocaleString()}
+                <span className="cost">
+                  <i className="fa fa-money text-success"></i> IDR {restaurant.costForTwo.toLocaleString()}
                 </span>
-                <span class="time">
-                  <i class="fa fa-clock-o text-primary"></i> 10h to 22h (Mon-Sun)
+                <span className="time">
+                  <i className="fa fa-clock-o text-primary"></i> 10h to 22h (Mon-Sun)
                 </span>
               </span>
             </a>

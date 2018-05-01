@@ -53,11 +53,11 @@ class Form extends React.Component {
 
   render() {
   	return (
-      <div class="input-group search-bar">
-        <input type="text" class="form-control" placeholder={`${this.state.latitude}, ${this.state.longitude}`} disabled/>
-        <span class="search-button">
-          <button type="button" class={ this.state.active ? "btn btn-danger" : "btn btn-secondary disabled" } onClick={this.handleGetRestaurants}>
-            <span class="glyphicon glyphicon-search">Find</span>
+      <div className="input-group search-bar">
+        <input type="text" className="form-control" placeholder={`${this.state.latitude}, ${this.state.longitude}`} disabled/>
+        <span className="search-button">
+          <button type="button" className={ this.state.active ? "btn btn-danger" : "btn btn-secondary disabled" } onClick={this.handleGetRestaurants}>
+            <span className="glyphicon glyphicon-search">Find</span>
           </button>  
         </span>
       </div>

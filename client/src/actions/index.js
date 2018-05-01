@@ -2,13 +2,7 @@ import axios from 'axios';
 import { GET_RESTAURANTS, ADD_RESTAURANT, DELETE_RESTAURANT, RESET_RESTAURANTS } from './types';
 import config from '../../config/default';
 
-const defaultRestaurants = [
-  {
-    _id: 1,
-    name: 'St. Ali',
-    image: 'https://b.zmtcdn.com/data/pictures/8/18386858/c036a4d9c577a45da5f29116bd650e0a_featured_v2.jpg?fit=around%7C200%3A200&crop=200%3A200%3B%2A%2C%2A',
-  },
-];
+const defaultRestaurants = [];
 
 const getRestaurantsAsync = restaurants => ({
   type: GET_RESTAURANTS,
