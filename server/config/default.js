@@ -1,12 +1,15 @@
-module.exports = {
-  app: {
-    port: process.env.PORT || 3000,
-  },
-  db: {
-    host: 'localhost',
-    port: 27017,
-    name: 'caffeinehunt',
-    // url: 'mongodb://localhost:27017/caffeinehunt',
-    url: 'mongodb://caffeinemaster:123456@ds225308.mlab.com:25308/caffeinehunt',
-  },
-};
+const env = process.env.NODE_ENV;
+const development = require('./development.js');
+const production = require('./production.js');
+
+switch (env) {
+  case 'development':
+    module.exports = development;
+    break;
+  case 'production':
+    module.exports = production;
+    break;
+  default:
+    module.exports = development;
+    break;
+}

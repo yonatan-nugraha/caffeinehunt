@@ -1,11 +1,15 @@
-module.exports = {
-  app: {
-    port: process.env.PORT || 8080,
-  },
-  server: {
-    host: 'localhost',
-    port: 3000,
-    // url: 'http://localhost:3000',
-    url: 'https://hidden-falls-86687.herokuapp.com',
-  },
-};
+const env = process.env.NODE_ENV;
+const development = require('./development.js');
+const production = require('./production.js');
+
+switch (env) {
+  case 'development':
+    module.exports = development;
+    break;
+  case 'production':
+    module.exports = production;
+    break;
+  default:
+    module.exports = development;
+    break;
+}
