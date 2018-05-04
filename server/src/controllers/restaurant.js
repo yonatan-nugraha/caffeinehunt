@@ -36,9 +36,7 @@ exports.findAll = (req, res) => {
       return restaurant;
     });
 
-    restaurants.sort((a, b) => { 
-      return a.distance - b.distance;
-    });
+    restaurants.sort((a, b) => a.distance - b.distance);
 
     res.send(restaurants.splice(start, limit));
   }).catch((err) => {

@@ -9,9 +9,10 @@ const mongodb = require('./mongodb');
 
 mongodb.connect();
 
+const city = 'Jakarta';
 const scrapPromises = [];
 
-for (let i = 1; i <= 10; i += 1) {
+for (let i = 1; i <= 1; i += 1) {
   const page = i > 1 ? `?page=${i}` : '';
 
   scrapPromises.push(new Promise((resolve, reject) => {
@@ -22,16 +23,22 @@ for (let i = 1; i <= 10; i += 1) {
 
         $('.search-card').each((index, element) => {
           const name = $(element).find('.result-title').text().trim();
-          const subzone = $(element).find('.search_result_subzone').text().trim();
-          const address = $(element).find('.search-result-address').text().trim();
-          const rating = $(element).find('.res-rating-nf').text().trim();
           const establishments = $(element).find('.res-snippet-small-establishment').find('a').map(function () {
             return $(this).text().trim();
           }).get().join(', ');
+          const cuisines = $(element).find('.search-page-text').find('.nowrap').find('a').map(function () {
+            return $(this).text().trim();
+          }).get().join(', ');
+          let rating = $(element).find('.res-rating-nf').text().trim();
           const costForTwo = $(element).find('.res-cost').text().trim().replace(/\D+/g, '');
           const openingHours = $(element).find('.res-timing').find('.search-grid-right-text').text().trim();
+          const phone = $(element).find('.res-snippet-ph-info').attr('data-phone-no-str').trim();
+          const locality = $(element).find('.search_result_subzone').text().trim();
+          const address = $(element).find('.search-result-address').text().trim();
           const imageUrl = $(element).find('.search_left_featured').find('a').attr('data-original').trim();
           const pageUrl = $(element).find('.result-title').attr('href').trim();
+
+          rating = rating === 'NEW' ? 0 : rating;
 
           restaurantPromises.push(axios.get(pageUrl)
             .then((response) => {
@@ -43,11 +50,14 @@ for (let i = 1; i <= 10; i += 1) {
                 name,
                 rating,
                 establishments,
+                cuisines,
                 costForTwo,
                 openingHours,
+                phone,
                 imageUrl,
-                subzone,
+                locality,
                 address,
+                city,
                 latitude,
                 longitude,
               };
@@ -93,12 +103,17 @@ for (let i = 1; i <= 10; i += 1) {
               image: imageName,
               rating: restaurant.rating,
               establishments: restaurant.establishments,
+              cuisines: restaurant.cuisines,
               costForTwo: restaurant.costForTwo,
               openingHours: restaurant.openingHours,
-              subzone: restaurant.subzone,
-              address: restaurant.address,
-              latitude: restaurant.latitude,
-              longitude: restaurant.longitude,
+              phone: restaurant.phone,
+              location: {
+                address: restaurant.address,
+                locality: restaurant.locality,
+                city: restaurant.city,
+                latitude: restaurant.latitude,
+                longitude: restaurant.longitude,
+              },
             }).save()
               .then((data) => {
                 console.log(`Inserting restaurant ${data.name} into mongodb`);
