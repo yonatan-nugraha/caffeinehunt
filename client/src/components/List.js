@@ -52,9 +52,9 @@ class List extends React.Component {
               <span className="restaurant-detail clearfix">
                 <span className="establishment">{restaurant.establishments}</span>
                 <span className="name">{restaurant.name}</span>
-                <span className="subzone">{restaurant.subzone}</span>
+                <span className="locality">{restaurant.location.locality}</span>
                 <span className="address">
-                  <i className="fa fa-map-marker text-warning"></i> {restaurant.address}
+                  <i className="fa fa-map-marker text-warning"></i> {restaurant.location.address}
                 </span>
                 <span className="cost">
                   <i className="fa fa-money text-success"></i> IDR {restaurant.costForTwo.toLocaleString()}
