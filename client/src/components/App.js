@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Form from './Form';
 import List from './List';
+import _ from 'lodash';
 
 class App extends Component {
   constructor(props) {
@@ -17,17 +18,10 @@ class App extends Component {
 
   componentDidMount() {
     window.addEventListener('scroll', this.handleScroll);
-    // document.body.addEventListener('touchmove', this.handleScroll);
   }
 
-  handleScroll = () => {
-    alert('a');
-    const scrollTop = (document.documentElement && document.documentElement.scrollTop) || document.body.scrollTop;
-    const scrollHeight = (document.documentElement && document.documentElement.scrollHeight) || document.body.scrollHeight;
-    const clientHeight = document.documentElement.clientHeight || window.innerHeight;
-    const scrolledToBottom = Math.ceil(scrollTop + clientHeight) >= scrollHeight;
-
-    if (scrolledToBottom) {
+  handleScroll = (event) => {
+    if (document.documentElement.scrollTop + window.innerHeight === document.documentElement.scrollHeight) {
       this.setState(() => ({ 
         coordinates: {
           latitude: this.state.coordinates.latitude,
@@ -35,8 +29,6 @@ class App extends Component {
         },
         page: this.state.page + 1
       }));
-
-      return false;
     }
   }
 
