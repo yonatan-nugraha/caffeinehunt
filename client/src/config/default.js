@@ -1,4 +1,4 @@
-const env = process.env.NODE_ENV;
+const env = process.env.REACT_APP_ENV;
 const development = require('./development.js');
 const production = require('./production.js');
 
