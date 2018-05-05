@@ -1,7 +1,7 @@
 module.exports = {
   app: {
     host: 'https://hidden-falls-86687.herokuapp.com',
-    port: process.env.PORT || 3000,
+    port: process.env.PORT || 4000,
     url: 'https://hidden-falls-86687.herokuapp.com',
   },
   db: {

@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const config = require('../config/default');
+const config = require('./config/default');
 
 module.exports = {
   mongoose,

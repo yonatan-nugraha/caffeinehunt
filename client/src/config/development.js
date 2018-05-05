@@ -1,11 +1,11 @@
 module.exports = {
   app: {
     host: 'http://localhost',
-    port: process.env.PORT || 8080,
+    port: process.env.PORT || 3000,
   },
   server: {
     host: 'http://localhost',
-    port: 3000,
-    url: 'http://localhost:3000',
+    port: 4000,
+    url: 'http://localhost:4000',
   },
 };

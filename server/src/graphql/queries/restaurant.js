@@ -8,7 +8,7 @@ const {
 
 const restaurantType = require('../types/restaurant');
 const Restaurant = require('../../models/restaurant');
-const config = require('../../../config/default');
+const config = require('../../config/default');
 
 require('../../global');
 

@@ -1,7 +1,6 @@
 const request = require('supertest');
 const app = require('../src/app');
 const mongodb = require('../src/mongodb');
-const config = require('../config/default');
 
 describe('Test the root path', () => {
   test('It should response the GET method', () => {
@@ -11,7 +10,7 @@ describe('Test the root path', () => {
   });
 });
 
-describe('Test the restaurant path', () => {
+describe('Test the graphql path', () => {
   beforeAll(() => {
     mongodb.connect();
   });
@@ -19,7 +18,7 @@ describe('Test the restaurant path', () => {
     mongodb.disconnect(done);
   });
   test('It should response the GET method', () => {
-    return request(app).get('/restaurants').then((response) => {
+    return request(app).get('/graphql').then((response) => {
       expect(response.statusCode).toBe(200);
     });
   });
