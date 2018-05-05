@@ -18,9 +18,11 @@ class App extends Component {
   componentDidMount() {
     window.addEventListener('scroll', this.handleScroll);
     document.body.addEventListener('touchmove', this.handleScroll);
+    window.addEventListener('touchmove', this.handleScroll);
   }
 
   handleScroll = () => {
+    alert('a');
     const scrollTop = (document.documentElement && document.documentElement.scrollTop) || document.body.scrollTop;
     const scrollHeight = (document.documentElement && document.documentElement.scrollHeight) || document.body.scrollHeight;
     const clientHeight = document.documentElement.clientHeight || window.innerHeight;
