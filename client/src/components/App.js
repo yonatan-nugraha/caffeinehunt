@@ -54,12 +54,10 @@ class App extends Component {
         }));
       }, () => {
         alert('Permission Denied');
-        throw new Error('Permission Denied');
       });
 
     } else {
       alert('Not Supported');
-      throw new Error('Not Supported');
     }
   };
 

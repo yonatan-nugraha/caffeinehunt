@@ -10,6 +10,6 @@ module.exports = {
     database: 'caffeinehunt',
     username: '',
     password: '',
-    url: 'mongodb://localhost:27017/caffeinehunt2',
+    url: 'mongodb://localhost:27017/caffeinehunt',
   },
 };

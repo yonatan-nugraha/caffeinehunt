@@ -59,6 +59,7 @@ module.exports = {
 
         return restaurants.splice(start, limit);
       }).catch((err) => {
+        console.log(err);
         return [];
       });
     },
