@@ -17,6 +17,7 @@ class App extends Component {
 
   componentDidMount() {
     window.addEventListener('scroll', this.handleScroll);
+    document.body.addEventListener('touchmove', this.handleScroll);
   }
 
   handleScroll = () => {

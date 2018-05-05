@@ -26,7 +26,7 @@ const List = ({ coordinates, page }) => (
         {data.restaurants.map(restaurant => {
           return (
             <li key={restaurant._id}>
-              <a href="">
+              <a href="#">
                 <span className="img">
                   <img className="img-thumbnail" src={restaurant.image} alt=""/>
                 </span>
