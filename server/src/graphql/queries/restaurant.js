@@ -1,6 +1,6 @@
 const {
   GraphQLID,
-  GraphQLString,
+  GraphQLFloat,
   GraphQLInt,
   GraphQLNonNull,
   GraphQLList,
@@ -8,6 +8,7 @@ const {
 
 const restaurantType = require('../types/restaurant');
 const Restaurant = require('../../models/restaurant');
+const config = require('../../../config/default');
 
 require('../../global');
 
@@ -29,11 +30,11 @@ module.exports = {
     args: {
       latitude: {
         name: 'latitude',
-        type: new GraphQLNonNull(GraphQLString),
+        type: new GraphQLNonNull(GraphQLFloat),
       },
       longitude: {
         name: 'longitude',
-        type: new GraphQLNonNull(GraphQLString),
+        type: new GraphQLNonNull(GraphQLFloat),
       },
       page: {
         name: 'page',
@@ -47,8 +48,9 @@ module.exports = {
         const start = (page - 1) * limit;
 
         restaurants.forEach((restaurant) => {
-          const distance = calculateDistance(latitude, longitude, restaurant.latitude, restaurant.longitude, 'K');
+          const distance = calculateDistance(latitude, longitude, restaurant.location.latitude, restaurant.location.longitude, 'K');
           restaurant.distance = distance;
+          restaurant.image = `${config.app.url}/images/restaurants/${restaurant.image}`;
 
           return restaurant;
         });
