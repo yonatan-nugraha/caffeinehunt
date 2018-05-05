@@ -12,7 +12,7 @@ mongodb.connect();
 const city = 'Jakarta';
 const scrapPromises = [];
 
-for (let i = 63; i <= 70; i += 1) {
+for (let i = 101; i <= 106; i += 1) {
   const page = i > 1 ? `?page=${i}` : '';
 
   scrapPromises.push(new Promise((resolve, reject) => {

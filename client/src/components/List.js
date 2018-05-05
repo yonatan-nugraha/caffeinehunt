@@ -6,7 +6,6 @@ const List = ({ coordinates, page }) => (
   <Query 
     query={GET_RESTAURANTS} 
     variables={{ latitude: coordinates.latitude, longitude: coordinates.longitude, page }}
-    skip={!page}
     notifyOnNetworkStatusChange
   >
     {({ loading, error, data, refetch, networkStatus, client }) => {
@@ -19,7 +18,7 @@ const List = ({ coordinates, page }) => (
       }
 
       if (error) { 
-        return ( <p>error</p> );
+        return (<div></div>)
       }
 
       return (
