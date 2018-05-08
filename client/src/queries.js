@@ -1,8 +1,8 @@
 import { gql } from 'apollo-boost';
 
 export const GET_RESTAURANTS = gql`
-  query getRestaurants($latitude: Float!, $longitude: Float!, $page: Int!) {
-    restaurants(latitude: $latitude, longitude: $longitude, page: $page) {
+  query getRestaurants($latitude: Float!, $longitude: Float!, $offset: Int!, $limit: Int!) {
+    restaurants(latitude: $latitude, longitude: $longitude, offset: $offset, limit: $limit) {
       _id
       name
       image

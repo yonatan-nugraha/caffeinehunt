@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import Form from './Form';
 import List from './List';
-import _ from 'lodash';
 
 class App extends Component {
   constructor(props) {
@@ -12,45 +11,32 @@ class App extends Component {
         latitude: '<latitude>',
         longitude: '<longitude>',
       },
-      page: 0
+      isLoading: false,
     };
   }
 
-  componentDidMount() {
-    window.addEventListener('scroll', this.handleScroll);
-  }
-
-  handleScroll = (event) => {
-    if (document.documentElement.scrollTop + window.innerHeight === document.documentElement.scrollHeight) {
-      this.setState(() => ({ 
-        coordinates: {
-          latitude: this.state.coordinates.latitude,
-          longitude: this.state.coordinates.longitude
-        },
-        page: this.state.page + 1
-      }));
-    }
-  }
-
   handleGetRestaurants = () => {
+    this.setState({ isLoading: true });
     const geolocation = navigator.geolocation;
 
     if (geolocation) {
       geolocation.getCurrentPosition((position) => {
         const { latitude, longitude } = position.coords;
 
-        this.setState(() => ({ 
+        this.setState({ 
           coordinates: {
             latitude,
             longitude
           },
-          page: 1
-        }));
+          isLoading: false,
+        });
       }, () => {
+        this.setState({ isLoading: false });
         alert('Permission Denied');
       });
 
     } else {
+      this.setState({ isLoading: false });
       alert('Not Supported');
     }
   };
@@ -61,10 +47,10 @@ class App extends Component {
         <Form 
           handleGetRestaurants={this.handleGetRestaurants}
           coordinates={this.state.coordinates}
+          isLoading={this.state.isLoading}
         />
         <List 
           coordinates={this.state.coordinates}
-          page={this.state.page}
         />
       </div>
     );
