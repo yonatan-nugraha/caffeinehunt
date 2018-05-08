@@ -36,16 +36,23 @@ module.exports = {
         name: 'longitude',
         type: new GraphQLNonNull(GraphQLFloat),
       },
-      page: {
-        name: 'page',
+      offset: {
+        name: 'offset',
+        type: new GraphQLNonNull(GraphQLInt),
+      },
+      limit: {
+        name: 'limit',
         type: new GraphQLNonNull(GraphQLInt),
       },
     },
     resolve(root, args) {
       return Restaurant.find().lean().then((restaurants) => {
-        const { latitude, longitude, page } = args;
-        const limit = 10;
-        const start = (page - 1) * limit;
+        const {
+          latitude,
+          longitude,
+          offset,
+          limit,
+        } = args;
 
         restaurants.forEach((restaurant) => {
           const distance = calculateDistance(latitude, longitude, restaurant.location.latitude, restaurant.location.longitude, 'K');
@@ -57,7 +64,7 @@ module.exports = {
 
         restaurants.sort((a, b) => a.distance - b.distance);
 
-        return restaurants.splice(start, limit);
+        return restaurants.splice(offset, limit);
       }).catch((err) => {
         console.log(err);
         return [];
