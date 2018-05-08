@@ -1,7 +1,12 @@
-#title {
-  margin: 20px 0px 10px;
+.title {
+  margin: 20px 0px 5px;
   font-size: 20px;
   font-weight: 600;
+}
+
+.title img {
+  max-width: 25px;
+  padding-bottom: 10px;
 }
 
 .search-bar .form-control {
@@ -24,7 +29,7 @@
 }
 
 .restaurant li>a {
-  height: 130px;
+  height: 120px;
   display: block;
   width: 100%;
   color: #344644;
@@ -39,15 +44,15 @@
   display: block;
   float: left;
   text-align: center;
-  width: 110px;
-  height: 110px;
+  width: 100px;
+  height: 100px;
   overflow: hidden;
   margin-top: 7px;
 }
 
 .restaurant li .restaurant-detail {
   display: block;
-  margin-left: 120px;
+  margin-left: 110px;
   margin-top: 5px;
 }
 
@@ -67,6 +72,7 @@
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+  line-height: 115%;
 }
 
 .restaurant li .restaurant-detail>.locality {
@@ -97,3 +103,8 @@
   font-size: 5rem;
 }
 
+.load-more {
+  margin: 15px auto;
+  text-align: center;
+  border-bottom-style: none !important;
+}

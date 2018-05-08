@@ -5,10 +5,10 @@ import { GET_RESTAURANTS } from '../queries';
 const List = ({ coordinates }) => (
   <Query 
     query={GET_RESTAURANTS} 
-    variables={{ latitude: coordinates.latitude, longitude: coordinates.longitude, offset: 0, limit: 5 }}
+    variables={{ latitude: coordinates.latitude, longitude: coordinates.longitude, offset: 0, limit: 10 }}
     notifyOnNetworkStatusChange
   >
-    {({ loading, error, data, fetchMore }) => {
+    {({ loading, error, data, networkStatus, fetchMore }) => {
       if (error) { 
         return (<div></div>)
       }
@@ -21,29 +21,28 @@ const List = ({ coordinates }) => (
         );
       }
 
-      window.addEventListener('scroll', () => {
-        if (document.documentElement.scrollTop + window.innerHeight === document.documentElement.scrollHeight) {
-          console.log('aaaa');
-          fetchMore({
-            variables: {
-              offset: data.restaurants.length
-            },
-            updateQuery: (prev, { fetchMoreResult }) => {
-              if (!fetchMoreResult) return prev;
-              return Object.assign({}, prev, {
-                restaurants: [...prev.restaurants, ...fetchMoreResult.restaurants]
-              });
-            }
-          });
-        }
-      });
+      const handleScroll = () => {
+        fetchMore({
+          variables: {
+            offset: data.restaurants.length
+          },
+          updateQuery: (prev, { fetchMoreResult }) => {
+            if (!fetchMoreResult) return prev;
+            return Object.assign({}, prev, {
+              restaurants: [...prev.restaurants, ...fetchMoreResult.restaurants]
+            });
+          }
+        });
+      };
+
+      window.scrollTo(0, document.documentElement.scrollHeight);
 
       return (
         <ul className="restaurant">
           {data.restaurants.map(restaurant => {
             return (
               <li key={restaurant._id}>
-                <a href="#">
+                <a href={`http://maps.google.com/maps?q=${restaurant.name} ${restaurant.location.locality}`} target="_blank">
                   <span className="img">
                     <img className="img-thumbnail" src={restaurant.image} alt=""/>
                   </span>
@@ -58,13 +57,21 @@ const List = ({ coordinates }) => (
                       <i className="fa fa-money text-success"></i> IDR {restaurant.costForTwo.toLocaleString()}
                     </span>
                     <span className="time">
-                      <i className="fa fa-clock-o text-primary"></i> 10h to 22h (Mon-Sun)
+                      <i className="fa fa-clock-o text-primary"></i> {restaurant.openingHours}
                     </span>
                   </span>
                 </a>
               </li>
             );
           })}
+          <li className="load-more">
+            <button 
+              type="button" 
+              className="btn btn-danger"
+              onClick={handleScroll}>
+              Load More
+            </button>
+          </li>
         </ul>
       );
     }}
