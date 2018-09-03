@@ -1,8 +1,8 @@
 const app = require('./app');
-const config = require('../config/default');
+const config = require('./config/default');
 const mongodb = require('./mongodb');
 
-const port = config.app.port || 4000;
+const { port } = config.app;
 
 mongodb.connect();
 

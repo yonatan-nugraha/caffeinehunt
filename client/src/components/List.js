@@ -1,66 +1,81 @@
 import React from 'react';
-import {connect} from 'react-redux';
-import {bindActionCreators} from 'redux';
-import { addRestaurant, deleteRestaurant, getRestaurants } from '../actions/index';
+import { Query } from 'react-apollo';
+import { GET_RESTAURANTS } from '../queries';
 
-class List extends React.Component {
-  constructor(props) {
-    super(props);
+const List = ({ coordinates }) => (
+  <Query 
+    query={GET_RESTAURANTS} 
+    variables={{ latitude: coordinates.latitude, longitude: coordinates.longitude, offset: 0, limit: 10 }}
+    notifyOnNetworkStatusChange
+  >
+    {({ loading, error, data, networkStatus, fetchMore }) => {
+      if (error) { 
+        return (<div></div>)
+      }
 
-    this.state = {
-
-    };
-
-    this.handleDeleteRestaurant = this.handleDeleteRestaurant.bind(this);
-  }
-
-  componentDidMount() {  
-    this.props.getRestaurants();
-
-    // this.props.deleteRestaurant({ _id: 2 });
-  }
-
-  handleDeleteRestaurant(e) {
-    this.props.deleteRestaurant({
-      _id: e.target.value
-    });
-  }
-
-  render() {
-    return (
-      <div class="row">
-      {this.props.restaurants.map(restaurant => {
+      if (loading) {
         return (
-          <div class="col-xs-4 offset-xs-4" key={restaurant._id}>
-            <figure class="figure">
-              <img src={restaurant.image} class="figure-img img-fluid rounded" />
-              <figcaption class="figure-caption">{restaurant.name}</figcaption>
-              <button 
-                value={restaurant._id}
-                onClick={this.handleDeleteRestaurant}
-                class="btn btn-danger"
-                type="button">Delete
-              </button>
-            </figure>
+          <div className="data-loading">
+            <i className="fa fa-refresh fa-spin"></i>
           </div>
         );
-      })}
-      </div>
-    );
-  }
-};
+      }
 
-const mapStateToProps = state => {
-  return { 
-    restaurants: state.restaurantReducer.restaurants
-  };
-};
+      const handleScroll = () => {
+        fetchMore({
+          variables: {
+            offset: data.restaurants.length
+          },
+          updateQuery: (prev, { fetchMoreResult }) => {
+            if (!fetchMoreResult) return prev;
+            return Object.assign({}, prev, {
+              restaurants: [...prev.restaurants, ...fetchMoreResult.restaurants]
+            });
+          }
+        });
+      };
 
-const mapDispatchToProps = dispatch => {  
-  return bindActionCreators({
-    getRestaurants: getRestaurants,
-    deleteRestaurant: deleteRestaurant
-  }, dispatch);
-}
+      window.scrollTo(0, document.documentElement.scrollHeight);
 
-export default connect(mapStateToProps, mapDispatchToProps)(List);
+      return (
+        <ul className="restaurant">
+          {data.restaurants.map(restaurant => {
+            return (
+              <li key={restaurant._id}>
+                <a href={`http://maps.google.com/maps?q=${restaurant.name} ${restaurant.location.locality}`} target="_blank">
+                  <span className="img">
+                    <img className="img-thumbnail" src={restaurant.image} alt=""/>
+                  </span>
+                  <span className="restaurant-detail clearfix">
+                    <span className="establishment">{restaurant.establishments}</span>
+                    <span className="name">{restaurant.name}</span>
+                    <span className="locality">{restaurant.location.locality}</span>
+                    <span className="address">
+                      <i className="fa fa-map-marker text-warning"></i> {restaurant.location.address}
+                    </span>
+                    <span className="cost">
+                      <i className="fa fa-money text-success"></i> IDR {restaurant.costForTwo.toLocaleString()}
+                    </span>
+                    <span className="time">
+                      <i className="fa fa-clock-o text-primary"></i> {restaurant.openingHours}
+                    </span>
+                  </span>
+                </a>
+              </li>
+            );
+          })}
+          <li className="load-more">
+            <button 
+              type="button" 
+              className="btn btn-danger"
+              onClick={handleScroll}>
+              Load More
+            </button>
+          </li>
+        </ul>
+      );
+    }}
+  </Query>
+);
+
+export default List;
